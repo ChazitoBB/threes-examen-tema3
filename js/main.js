@@ -10,6 +10,11 @@ let mixer;
 let characterGroup;
 let followCamera = true;
 
+const normalSpeed = 250;
+const fastSpeed = 400; // Puedes ajustar este valor según lo rápido que desees que sea la carrera
+let currentSpeed = normalSpeed;
+
+
 const params = {
     asset: 'Sad Idle'
 };
@@ -20,7 +25,9 @@ const assets = [
     'Catwalk Walk Forward Turn 90R',
     'Catwalk Walk Forward Turn 90L',
     'Catwalk Walk Stop Twist L',
-    'Sad Idle'
+    'Sad Idle',
+	'Fast Run',
+	'Jump'
 ];
 
 const actions = {};
@@ -168,14 +175,23 @@ function onDocumentKeyDown(event) {
         case 'a':
             switchAnimation(actions['Catwalk Walk Forward Turn 90L']);
             break;
+        case 'shift':
+            currentSpeed = fastSpeed;
+            switchAnimation(actions['Fast Run']);
+            break;
+        case ' ':
+            switchAnimation(actions['Jump']);
+            break;
     }
 }
 
 function onDocumentKeyUp(event) {
     keyPressed[event.key.toLowerCase()] = false;
+	currentSpeed = normalSpeed;
 
     if (!keyPressed.w && !keyPressed.s && !keyPressed.d && !keyPressed.a) {
         if (!stopAction) {
+			
             stopAction = actions['Catwalk Walk Stop Twist L'];
             stopAction.loop = THREE.LoopOnce;
             stopAction.clampWhenFinished = true;
@@ -186,7 +202,11 @@ function onDocumentKeyUp(event) {
         }
         switchAnimation(stopAction, false);
     }
+
+    
 }
+
+
 
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -201,9 +221,9 @@ function animate() {
 
     if (characterGroup) {
         if (keyPressed.w) {
-            characterGroup.translateZ(100 * delta);
+            characterGroup.translateZ(currentSpeed * delta);
         } else if (keyPressed.s) {
-            characterGroup.translateZ(-100 * delta);
+            characterGroup.translateZ(-currentSpeed * delta);
         } else if (keyPressed.d) {
             characterGroup.rotateY(-Math.PI / 4 * delta);
         } else if (keyPressed.a) {
@@ -224,3 +244,4 @@ function animate() {
 
     stats.update();
 }
+
