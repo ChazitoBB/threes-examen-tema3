@@ -108,6 +108,25 @@ function init() {
         followCamera = !followCamera;
     });
     document.body.appendChild(button);
+
+     // Generar n cubos aleatorios distribuidos por toda la superficie
+     const numCubes = 20; // Cambia este valor según la cantidad de cubos que desees generar
+     const cubeSize = 70; // Tamaño de los cubos
+ 
+     for (let i = 0; i < numCubes; i++) {
+         const cube = new THREE.Mesh(
+             new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize),
+             new THREE.MeshPhongMaterial({ color: Math.random() * 0xffffff })
+         );
+ 
+         const x = Math.random() * 2000 - 1000; // Coordenada x aleatoria en un rango amplio
+         const z = Math.random() * 2000 - 1000; // Coordenada z aleatoria en un rango amplio
+         const y = cubeSize / 2; // Altura para que los cubos estén al nivel del suelo
+ 
+         cube.position.set(x, y, z);
+         scene.add(cube);
+     }
+    
 }
 
 function loadAssets() {
