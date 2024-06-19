@@ -26,19 +26,26 @@ const assets = [
     'Catwalk Walk Forward Turn 90L',
     'Catwalk Walk Stop Twist L',
     'Sad Idle',
-	'Fast Run',
-	'Jump'
+    'Fast Run',
+    'Double Leg Takedown',
+    'Jump',
+    'Boxing',
+    'Boxing (1)',
+    'Boxing (2)',
+    'Boxing (3)',
+    'Double Leg Takedown - Attacker'
 ];
 
 const actions = {};
 let activeAction;
 let previousAction;
 let stopAction;
-let keyPressed = { w: false, s: false, d: false, a: false };
+let keyPressed = { w: false, s: false, d: false, a: false, u: false };
 
 init();
 
 function init() {
+    
     const container = document.createElement('div');
     document.body.appendChild(container);
 
@@ -198,8 +205,24 @@ function onDocumentKeyDown(event) {
             currentSpeed = fastSpeed;
             switchAnimation(actions['Fast Run']);
             break;
+        case 'u':
+            switchAnimation(actions['Double Leg Takedown']);
+            break;
         case ' ':
+            currentSpeed = normalSpeed - 200;
             switchAnimation(actions['Jump']);
+            break;
+        case 'i':
+            switchAnimation(actions['Boxing']);
+            break;
+        case 'o':
+            switchAnimation(actions['Boxing (1)']);
+            break;
+        case 'j':
+            switchAnimation(actions['Boxing (2)']);
+            break;
+        case 'k':
+            switchAnimation(actions['Boxing (3)']);
             break;
     }
 }
